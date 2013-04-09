@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="css/style.css"/>
+		<link rel="stylesheet" href="css/product.css"/>
+        <script src="js/vendor/modernizr-2.6.1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/vendor/cloud-carousel.1.0.4.js"></script>
+		<script type="text/javascript">
+		
+			var twitterFeed = [];
+			var currentIndex = 0;
+		
+			$(document).ready(function()
+			{
+				// This initialises carousels on the container elements specified, in this case, carousel1.
+				$("#carousel1").CloudCarousel(		
+					{			
+						xPos: 230,
+						yPos: 105,
+						minScale: 0.5,
+						reflHeight: 56,
+						reflGap: -45,
+						reflOpacity: 0.5,
+						xRadius: 300,
+						yRadius: -75,
+						buttonLeft: $("#left-but"),
+						buttonRight: $("#right-but"),
+						altBox: $("#alt-text"),
+						titleBox: $("#title-text")
+					}
+				);
+				
+				ProductTabs = new ProductTabs;
+			});
+			
+			function ProductTabs() 
+			{
+			    this._init();
+			}
+		 	
+			ProductTabs.prototype._init = function()
+			{
+			    // disable product tab click event for IE
+			    if(!$.browser.msie) {
+			        
+			        $('.product_tabs li a').each( function() 
+					{
+			            $(this).click( function(params) 
+						{
+			                var selector = $(this).attr('class');
+			                $('.product_specs').hide();
+			                $('.product_tabs li').removeClass('selected');
+			                
+			                $('.product_tabs li.' + selector).addClass('selected');
+			                $('#' + selector).show();
+			                $.product.tab = selector;
+			                $.product._doPersistantTabs();
+			                return false;
+			            } );
+			        } );
+			    }
+			}
+
+			function prevClick()
+			{
+				if(currentIndex == 0)
+					currentIndex = 20;
+				else
+					currentIndex--;
+			
+		    	// Show the most recent item in the Twitter feed
+		    	animateOutput(twitterFeed[currentIndex].t, $('#search-query').val());
+			}
+			
+			function nextClick()
+			{
+				if(currentIndex == 20)
+					currentIndex = 0;
+				else
+					currentIndex++;
+			
+		    	// Show the most recent item in the Twitter feed
+		    	animateOutput(twitterFeed[currentIndex].t, $('#search-query').val());
+			}
+		
+		    //Gets values from Twitter feed and animates text.
+		    function animateOutput(ausgabeText, authorText) 
+			{
+				// Add the @
+				authorText = "@" + authorText;
+		
+				$("#textDisplay")
+					.hide()
+					.text(ausgabeText)
+					.fadeIn('fast')
+					.delay(1000);
+				
+				$("#textDisplayH")
+					.hide()
+					.text(ausgabeText)
+					.fadeIn('fast')
+					.delay(1000);
+					
+				$("#author")
+					.hide()
+					.text(authorText)
+					.fadeIn('fast')
+					.delay(1000);
+		    }
+
+		    function onButtonClick_size(size)
+		    {	    
+		    	$('ul.mens.size_buttons li').each(function(index) {
+					// Reset all other buttons
+					//$('ul.mens.size_buttons li a').removeClass("picked");
+			    	
+			    	if($(this).text().trim() == size)
+			    	{
+		    	    	//alert("size selected= " + size);
+		    	    	// Set the selected item
+		    	    	$('a', this).addClass("picked");
+			    	}
+			    	else
+	    			{
+			    		$('a', this).removeClass("picked");
+	    			}
+		    	 });
+		    }
+		    
+		    function onButtonClick_color(color)
+		    {	    
+		    	$('ul.mens.shirt_colors li').each(function(index) {
+					// Reset all other buttons
+					//$('ul.mens.size_buttons li a').removeClass("picked");
+			    	
+			    	if($(this).text().trim() == color)
+			    	{
+		    	    	//alert("color selected= " + color);
+		    	    	// Set the selected item
+		    	    	$('a', this).addClass("pickedColor");
+			    	}
+			    	else
+	    			{
+			    		$('a', this).removeClass("pickedColor");
+	    			}
+		    	 });
+		    }
+		    
+		    function getUserTimeline()
+		    {
+		    	
+		    	var userId = $('#search-query').val();
+		    	
+		    	if( userId != "")
+		    	{	  
+					alert(userId);
+		    		//var url = "https://api.twitter.com/1/statuses/user_timeline.json?include_entities=true&include_rts=true&screen_name=" + userId;
+					var url = "http://tweetgear.com/services/twitter_rest.php?username=" + userId;
+		
+					alert(url);
+					$.getJSON(url, 
+			  			function(data)
+			  			{
+							alert(data);
+			  				processTimelineData(data);
+			  			});
+			  	}
+			  	else
+			  	{
+			  		// do work here!
+			  		alert("Please enter a Twitter user.");
+			  	}
+		    }
+		    
+		    function processTimelineData(data)
+		    {
+		    	// Reset the current index as a new search has occurred
+		    	currentIndex = 0;
+		    	twitterFeed = data.tg;
+		    	
+		    	// Show the most recent item in the Twitter feed
+		    	animateOutput(data.tg[currentIndex].t, $('#search-query').val());
+		    	
+		    	// var items=data.tg;
+				/*$.each(items, function(key,val)
+		   		{		   
+		   			alert(val.t);
+		   		});*/
+		    }
+		    
+		</script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+    	<div class="wrapper">
+	    	<div class="header">
+			    <div id="top-bar-bg"></div>
+			    <div class="wrap message">
+				  	<form method="POST" action="reviewCart.jsp" class="header-content"><input type=hidden
+						name=paymentType value="paymentType">
+				    	<div id="doc">
+					    	<div id="top-stuff"> 
+					        	<div id="banners" style="clear:both;"></div> 
+								<div id="top-bar-outer"> 
+					          		<div id="top-bar"> 
+						            	<div class="top-bar-inside"> 
+							              	<div class="static-links"> 
+												<div id="logo"></div>
+												<div style="width: 560px;float: right;">
+													<div id="navigation" style="margin-top:20px;">
+														<ul>
+															<li>
+																<input id="cart-button" style="border: none;background-color: transparent;" type="submit" title="" value=""/>
+															</li>
+															<li>
+																<a style="font-size: 9pt;font-weight: bold;">HOME</a>
+															</li>
+															<li>
+																<a style="font-size: 9pt;font-weight: bold;">CONTACT</a>
+															</li>
+														</ul>
+													</div>
+													<div id="search-form">
+														<div id="search-input">
+															<input id="search-query" value="" placeholder="Search" name="q" type="text" />
+														</div>	
+														<span class="glass"><input type="button" value="" onclick="getUserTimeline()" /></span>
+													</div>
+												</div>	
+											</div> 
+						            	</div> 
+									</div> 
+					       		</div>
+							</div>
+						</div>
+						<div style="padding-top: 50px;">
+						<div style="float:left;padding-left: 0px;">
+							<div style="position:relative;">
+								<div style="position:absolute; z-index:1000; left:183px; top:110px; width:100px; max-height:300px;">
+									<span style="font-size:10pt; text-align:left;">
+										<b><div id="textDisplay"></div></b>
+									</span>
+									<div id="author" style="text-align:right; width:98px;padding-top:5px;font-size:9pt"></div>
+								</div>
+								<!-- Define left and right buttons. -->
+								<input id="left-but" type="button" value="" style="position:absolute; width:40px;height:90px; top:145px; z-index:1100;left:10px;background:url(img/nav/prev.png) no-repeat top;border:none;"/>
+						        <input id="right-but" type="button" value="" style="position:absolute;width:40px;height:90px; top:145px; z-index:1100;right:0px;background:url(img/nav/next.png) no-repeat top;border:none;"/>
+								<input id="top-but" type="button" onclick="prevClick()" value="" style="position:absolute; width:90px;height:40px; z-index:1100;left:183px; top:10px;background:url(img/nav/tweet_up.png) no-repeat top;border:none;"/>
+						        <input id="bottom-but" type="button" onclick="nextClick()" value="" style="position:absolute;width:90px;height:40px; z-index:1100;left:183px; bottom:0px;background:url(img/nav/tweet_down.png) no-repeat top;border:none;"/>
+								<!-- This is the container for the carousel. -->
+						        <div id="carousel1">            
+						            <!-- All images with class of "cloudcarousel" will be turned into carousel items -->
+						            <!-- You can place links around these images -->
+						            <!--<img class = "cloudcarousel" src="http://www.tonga-fashion.com/TweetGear/img/carousel/flags/blank.png" alt="I'm an F18 Bro!" title="I'm an F18 Bro!" />
+						            <img class = "cloudcarousel" src="http://www.tonga-fashion.com/TweetGear/img/carousel/flags/blank.png" alt="Live The Sheen Dream" title="Live The Sheen Dream" />-->
+						            <img class="cloudcarousel" src="img/carousel/flags/blank.png" alt="" title="" />
+						            <img class="cloudcarousel" src="img/carousel/flags/vneck.png" alt="" title="" />
+						        </div>
+					        </div>
+					        <!-- Define elements to accept the alt and title text from the images. -->
+					        <p id="title-text"></p>
+					        <p id="alt-text"></p>
+						</div>
+						<div id="selection">
+							<div id="tabs_container" class="mens"> 
+				                <div class="tabs"> 
+				                    <ul class="product_tabs"> 
+				                        <li class="mens selected">
+				                        	<a class="mens" title="Men">Men</a>
+										</li> 
+				                        <li class="womens">
+				                        	<a class="womens" title="Women">Women</a>
+										</li> 
+				                    </ul> 
+				                    <!-- tab containers --> 
+									<div id="mens" class="product_specs" > 
+					            		<h3>Mens Classic Tee</h3> 
+					            		<ul class="mens size_buttons"> 
+					                        <li> 
+				                                <a class="picked" onclick="onButtonClick_size('S')">S</a> 
+					                        </li>
+					                        <li> 
+				                                <a onclick="onButtonClick_size('M')">M</a> 
+					                        </li>
+					                        <li> 
+				                                <a onclick="onButtonClick_size('L')">L</a> 
+					                        </li>
+					                        <li> 
+				                                <a onclick="onButtonClick_size('XL')">XL</a> 
+					                        </li>
+					                	</ul>
+					                	<div style="clear: both;"></div>
+				                		<ul class="mens shirt_colors"> 
+					                        <li> 
+				                                <a onclick="onButtonClick_color('W')" class="pickedColor"><p style="color:#fff;background-color:#fff;">W</p></a> 
+					                        </li>
+					                        <li>
+					                        	<a onclick="onButtonClick_color('B')"><p style="color: #000;background-color: #000;">B</p></a>
+					                        </li>
+					                	</ul>
+										<div style="clear:both;"></div>
+										<div id="add-cart"></div>
+										<div id="total-cart">
+											<h4 style="float: left;">Subtotal: $22</h4>
+										</div>
+									</div>
+									<div id="womens" class="product_specs" style="display:none"> 
+										<h3>$22 Womens Tee</h3> 
+						                <ul class="womens size_buttons"> 
+											<li> 
+												<a>S</a> 
+											</li> 
+											<li> 
+												<a>M</a>
+											</li> 
+											<li> 
+												<a>L</a> 
+											</li>
+											<li>
+												<a>XL</a>
+											</li> 
+										</ul>
+										<div style="clear:both;"></div>
+										<input type="button" title="Buy Now" value="Buy Now"/>
+									</div>
+								</div>
+				            </div> 
+						</div>
+					</form>
+				</div>
+				</div>
+				<div class="push"></div>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="wrap">
+				<div id="shirt-views">
+					<div id="shirt-front"></div>
+					<div id="shirt-back"></div>
+				</div>
+				<div style="width:275px;float: left;padding-top:20px;padding-right:60px;">
+					<div id="bracket-left"></div>
+					<p style="color:#ffffff;font-size: 10pt;font-weight: bold;padding-top: 35px;">We specialize in custom t-shirts featuring your favorite tweets. Just search a twitter user and instantly preview your shirt with the most recent tweets.</p>
+				</div>
+			</div>
+		</div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.0.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>

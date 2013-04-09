@@ -1,0 +1,290 @@
+/* Global ================================================== */
+p, ul, dl, dd 
+{
+font-weight: normal;
+margin: 0;
+padding: 0;
+}
+
+a { color: #3d89c8; text-decoration: none; }
+a:visited { color: #3d89c8; }
+a:hover { cursor: pointer; text-decoration: underline; }
+a:active { color: #3d89c8; outline: 0; text-decoration: none; }
+a:focus { outline: 0; }
+
+
+/* Headings */
+h1, h3, h4, h5, h6 { 
+color: #ffffff;
+font-family:helvetica, arial; 
+font-weight: 400;
+padding: 0;
+}
+
+h1 a:hover, h2 a:hover, h3 a:hover, 
+h4 a:hover, h5 a:hover, h6 a:hover {
+color: #1b325f;
+text-decoration: none;
+}
+h5 a:hover { color: #3c89c8; }
+
+ul { list-style-type: none; }
+hr { display: none; } /* this is old */
+.ups, .ups:visited, .ups:active { color: #eb1f7a; text-transform: uppercase; }
+
+/* Tabs =================================================  */
+.tabs, .product_tabs 
+{ 
+	width: 370px;
+}
+
+.product_tabs 
+{
+	height: 30px;
+	position: relative;
+}
+
+.product_tabs li, .product_tabs li a 
+{  
+	float: left; 
+}
+
+.product_tabs li 
+{ 
+	color: #3c89c8;
+	font-size: 15px;
+}
+
+.product_tabs li a 
+{
+	font-family:helvetica, arial; 
+	height: auto;
+	padding: 7px 0;
+	text-align: center;
+}
+
+.product_tabs li a 
+{ 
+	width: 77px; 
+}
+
+.product_tabs li a:hover 
+{ 
+	color: #1B325F; text-decoration: none; 
+}
+
+.product_tabs .selected 
+{
+	border-bottom: none;
+	position: relative;
+	width: 75px; 
+}
+
+.other_tabs .selected 
+{ 
+	padding: 0 20px; width: auto; 
+}
+
+.product_tabs .selected a 
+{ 
+	color: #ffffff; width: 100%; 
+}
+
+.product_tabs .selected:hover 
+{ 
+	cursor: auto;
+	text-decoration: none;
+}
+
+/* Product Details ----------------------- */
+.product_specs 
+{
+	float: left;
+	padding-left:20px;
+	width: 370px;
+}
+
+.product_specs h2 
+{ 
+	clear: left; margin-bottom: 8px; width: 100%; 
+}
+
+.product_specs .strike_price 
+{ 
+	text-decoration: line-through; 
+}
+
+.product_specs .sale_price 
+{ 
+	color: #eb1f7a; 
+}
+
+.product_specs p 
+{ 
+	clear: left; margin-bottom: 10px; width: 100%; 
+}
+
+.other_prod .gift_cert 
+{
+	display: block;
+	line-height: auto;
+}
+
+.product_specs 
+{
+	line-height: 16px;
+	margin-bottom: 16px;
+}   
+    
+/* Size Buttons */
+.product_specs ul 
+{ 
+	width: 100%; 
+}
+
+.product_specs ul:last-child 
+{ 
+	margin-bottom:  0px; 
+}
+
+.size_buttons li, .size_buttons a 
+{
+	float: left;
+	min-width: 37px;
+}
+
+.size_buttons li 
+{ 
+	margin: 0 0px 0px 0; 
+}
+
+.size_buttons li a, 
+.size_buttons .limited a, 
+.size_buttons .disabled 
+{
+}
+
+.size_buttons li:last-child 
+{ 
+	margin-right: 0; 
+}
+
+.size_buttons a 
+{
+	color: #3c89c8;
+	font-size:smaller;
+	padding: 5px 0 5px 0;
+	text-align: center;
+}
+
+.size_buttons a:hover, 
+.size_buttons .picked 
+{
+	border-color: #3c89c8;
+	color: #FFF;	
+	text-decoration: none;
+}
+
+.size_buttons .limited a, 
+.size_buttons .disabled 
+{
+	padding: 0px 0 0px 0;
+	text-align: center;
+}
+
+.size_buttons .disabled 
+{
+	border: 1px solid #d1d1d1;
+	color: #999;
+}
+
+.size_buttons span {
+display: block;
+font-size: 9px;
+line-height: 9px;
+}
+
+.size_buttons.long li, 
+.size_buttons.long a 
+{ 
+	width: 55px; 
+}
+
+
+.shirt_colors li, .shirt_colors a 
+{
+	float: left;
+	min-width: 37px;
+}
+
+.shirt_colors li 
+{ 
+	margin: 0 0px 0px 0; 
+}
+
+.shirt_colors li a, 
+.shirt_colors .limited a, 
+.shirt_colors .disabled 
+{
+	border: 3px solid #242c39;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+.shirt_colors li:last-child 
+{ 
+	margin-right: 0; 
+}
+
+.shirt_colors a 
+{
+	color: #000000;
+	font-size:smaller;
+	padding: 5px 0 5px 0;
+	text-align: center;
+}
+
+.shirt_colors a:hover, 
+.shirt_colors .picked 
+{
+	border-color: #3c89c8;
+	text-decoration: none;
+}
+
+.shirt_colors .limited a, 
+.shirt_colors .disabled 
+{
+	padding: 0px 0 0px 0;
+	text-align: center;
+}
+
+.shirt_colors .disabled 
+{
+	border: 1px solid #d1d1d1;
+	color: #999;
+}
+
+.shirt_colors span {
+display: block;
+font-size: 9px;
+line-height: 9px;
+}
+
+.shirt_colors.long li, 
+.shirt_colors.long a 
+{ 
+	width: 55px; 
+}
+
+#total-cart
+{
+	width:200px;
+}
+
+#add-cart
+{
+	width:50px;
+	height:40px;
+	float:right;
+	background:no-repeat url(../img/products/add_cart.png);
+}
